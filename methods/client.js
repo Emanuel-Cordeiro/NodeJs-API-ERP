@@ -14,6 +14,8 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(client);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar o cliente.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -24,6 +26,8 @@ router.get('/', async (_, res) => {
     res.status(200).json(clients);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar os clientes.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -50,6 +54,8 @@ router.post('/', async (req, res) => {
     res
       .status(400)
       .json({ error: 'Erro ao incluir/alterar o cliente.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -64,6 +70,8 @@ router.delete('/:id', async (req, res) => {
     res
       .status(400)
       .json({ message: 'Erro ao excluir o cliente.', error: error.message });
+
+    log.generateLog(error, SCREEN);
   }
 });
 

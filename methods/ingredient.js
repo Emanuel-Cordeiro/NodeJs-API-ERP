@@ -14,6 +14,8 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(ingredients);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar o ingrediente.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -24,6 +26,8 @@ router.get('/', async (_, res) => {
     res.status(200).json(ingredients);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar os ingredientes.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -50,6 +54,8 @@ router.post('/', async (req, res) => {
     res
       .status(400)
       .json({ error: 'Erro ao incluir/alterar o ingrediente.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -65,6 +71,8 @@ router.delete('/:id', async (req, res) => {
       message: 'Erro ao excluir o ingrediente.',
       error: error.message,
     });
+
+    log.generateLog(error, SCREEN);
   }
 });
 

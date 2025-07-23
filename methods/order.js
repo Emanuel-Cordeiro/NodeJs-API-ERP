@@ -14,6 +14,8 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar o pedido.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -28,6 +30,8 @@ router.get('/', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao buscar os pedidos.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
@@ -69,6 +73,8 @@ router.delete('/:id', async (req, res) => {
     res
       .status(400)
       .json({ message: 'Erro ao excluir o pedido.', error: error.message });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
