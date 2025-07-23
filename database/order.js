@@ -1,15 +1,22 @@
 const { databaseTransaction } = require('./db');
 
-async function selectOrders() {
-  const sql = `SELECT o.order_id, o.client_id, c.name as client_name, o.delivery_date, o.observation, o.paid, o.delivery,
+async function selectOrders(startingDate, endingDate, paid) {
+  const sql = `SELECT o.order_id, o.client_id, c.name as client_name, CAST(o.delivery_date AS DATE), o.observation, o.paid, o.delivery,
     CAST(SUM(oi.price*oi.quantity) AS NUMERIC(10,2)) AS total_value
     FROM orders o
     LEFT JOIN client c on c.client_id = o.client_id
     LEFT JOIN order_item oi ON oi.order_id = o.order_id
+    WHERE o.delivery_date >= $1
+    AND o.delivery_date <= $2
+    ${paid ? 'AND o.paid = $3' : 'AND false <> $3'}
     GROUP BY o.order_id, o.client_id, c.name, o.delivery_date, o.observation, o.paid, o.delivery
     ORDER BY o.order_id`;
 
-  const result = await databaseTransaction(sql);
+  const result = await databaseTransaction(sql, [
+    startingDate,
+    endingDate,
+    paid,
+  ]);
 
   const orders = [];
 

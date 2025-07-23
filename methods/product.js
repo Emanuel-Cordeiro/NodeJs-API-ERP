@@ -37,6 +37,11 @@ router.post('/', async (req, res) => {
       status = 201;
     }
 
+    log.generateLog(
+      `Produto ${client_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      SCREEN
+    );
+
     res.status(status).json({ retorno: 'Sucesso', id: productId });
   } catch (error) {
     res
@@ -48,6 +53,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await db.deleteProduct(req.params.id);
+
+    log.generateLog(`Produto ${req.params.id} excluído.`, SCREEN);
 
     res.sendStatus(204);
   } catch (error) {

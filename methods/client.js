@@ -1,8 +1,11 @@
 const express = require('express');
 
 const db = require('../database/client');
+const log = require('../database/log');
 
 const router = express.Router();
+
+const SCREEN = 'client';
 
 router.get('/:id', async (req, res) => {
   try {
@@ -37,6 +40,11 @@ router.post('/', async (req, res) => {
       status = 201;
     }
 
+    log.generateLog(
+      `Cliente ${client_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      SCREEN
+    );
+
     res.status(status).json({ retorno: 'Sucesso', id: client_id });
   } catch (error) {
     res
@@ -48,6 +56,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await db.deleteCustomer(req.params.id);
+
+    log.generateLog(`Cliente ${req.params.id} excluído.`, SCREEN);
 
     res.sendStatus(204);
   } catch (error) {

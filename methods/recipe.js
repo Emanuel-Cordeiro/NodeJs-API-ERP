@@ -1,6 +1,7 @@
 const express = require('express');
 
 const db = require('../database/recipe');
+const log = require('../database/log');
 
 const router = express.Router();
 
@@ -36,6 +37,11 @@ router.post('/', async (req, res) => {
       recipeId = await db.insertRecipe(req.body);
     }
 
+    log.generateLog(
+      `Receita ${client_id} ${(status = 201 ? 'incluída' : 'alterada')}.`,
+      SCREEN
+    );
+
     res.status(status).json({ retorno: 'Sucesso', id: recipeId });
   } catch (error) {
     res
@@ -47,6 +53,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await db.deleteRecipe(req.params.id);
+
+    log.generateLog(`Receita ${req.params.id} excluída.`, SCREEN);
 
     res.sendStatus(204);
   } catch (error) {

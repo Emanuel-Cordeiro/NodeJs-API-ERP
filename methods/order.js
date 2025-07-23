@@ -1,8 +1,11 @@
 const express = require('express');
 
 const db = require('../database/order');
+const log = require('../database/log');
 
 const router = express.Router();
+
+const SCREEN = 'orders';
 
 router.get('/:id', async (req, res) => {
   try {
@@ -14,9 +17,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.get('/', async (_, res) => {
+router.get('/', async (req, res) => {
   try {
-    const response = await db.selectOrders();
+    const response = await db.selectOrders(
+      req.query.startingDate,
+      req.query.endingDate,
+      req.query.paid
+    );
 
     res.status(200).json(response);
   } catch (error) {
@@ -36,17 +43,26 @@ router.post('/', async (req, res) => {
       status = 201;
     }
 
+    log.generateLog(
+      `Pedido ${order_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      SCREEN
+    );
+
     res.status(status).json({ retorno: 'Sucesso', id: order_id });
   } catch (error) {
     res
       .status(400)
       .json({ message: 'Erro ao inserir/alterar o pedido.', error });
+
+    log.generateLog(error, SCREEN);
   }
 });
 
 router.delete('/:id', async (req, res) => {
   try {
     await db.deleteOrder(req.params.id);
+
+    log.generateLog(`Pedido ${req.params.id} excluído.`, SCREEN);
 
     res.sendStatus(204);
   } catch (error) {
