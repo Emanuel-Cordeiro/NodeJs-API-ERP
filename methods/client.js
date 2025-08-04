@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     res.status(status).json({ retorno: 'Sucesso', id: client_id });
 
     log.generateLog(
-      `Cliente ${client_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      `Cliente ${client_id} ${status === 201 ? 'incluído' : 'alterado'}.`,
       SCREEN
     );
   } catch (error) {

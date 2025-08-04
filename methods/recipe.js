@@ -43,10 +43,10 @@ router.post('/', async (req, res) => {
 
     res.status(status).json({ retorno: 'Sucesso', id: recipeId });
 
-    log.generateLog(
-      `Receita ${recipeId} ${(status = 201 ? 'incluída' : 'alterada')}.`,
-      SCREEN
-    );
+    // log.generateLog(
+    //   `Receita ${recipeId} ${(status === 201 ? 'incluída' : 'alterada')}.`,
+    //   SCREEN
+    // );
   } catch (error) {
     res
       .status(400)

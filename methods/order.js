@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
     res.status(status).json({ retorno: 'Sucesso', id: order_id });
 
     log.generateLog(
-      `Pedido ${order_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      `Pedido ${order_id} ${status === 201 ? 'incluído' : 'alterado'}.`,
       SCREEN
     );
   } catch (error) {

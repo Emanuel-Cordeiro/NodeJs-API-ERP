@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     res.status(status).json({ retorno: 'Sucesso', id: ingredientId });
 
     log.generateLog(
-      `Ingrediente ${ingredientId} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      `Ingrediente ${ingredientId} ${status === 201 ? 'incluído' : 'alterado'}.`,
       SCREEN
     );
   } catch (error) {
