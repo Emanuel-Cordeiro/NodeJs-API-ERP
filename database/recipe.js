@@ -17,7 +17,7 @@ async function selectRecipe(id) {
 
   let obj = result[0];
 
-  sql = `SELECT recipe_ingredient.ingredient_id, ingredient.description, recipe_ingredient.quantity, ingredient.cost
+  sql = `SELECT recipe_ingredient.ingredient_id, ingredient.description, recipe_ingredient.quantity, ingredient.cost, ingredient.unity
     FROM recipe_ingredient 
     LEFT JOIN ingredient ON ingredient.ingredient_id = recipe_ingredient.ingredient_id
     WHERE recipe_id = $1`;

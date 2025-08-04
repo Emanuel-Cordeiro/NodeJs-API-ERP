@@ -47,12 +47,12 @@ router.post('/', async (req, res) => {
       status = 201;
     }
 
+    res.status(status).json({ retorno: 'Sucesso', id: order_id });
+
     log.generateLog(
       `Pedido ${order_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
       SCREEN
     );
-
-    res.status(status).json({ retorno: 'Sucesso', id: order_id });
   } catch (error) {
     res
       .status(400)
@@ -66,9 +66,9 @@ router.delete('/:id', async (req, res) => {
   try {
     await db.deleteOrder(req.params.id);
 
-    log.generateLog(`Pedido ${req.params.id} excluído.`, SCREEN);
-
     res.sendStatus(204);
+
+    log.generateLog(`Pedido ${req.params.id} excluído.`, SCREEN);
   } catch (error) {
     res
       .status(400)

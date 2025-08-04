@@ -44,12 +44,12 @@ router.post('/', async (req, res) => {
       status = 201;
     }
 
+    res.status(status).json({ retorno: 'Sucesso', id: ingredientId });
+
     log.generateLog(
-      `Ingrediente ${client_id} ${(status = 201 ? 'incluído' : 'alterado')}.`,
+      `Ingrediente ${ingredientId} ${(status = 201 ? 'incluído' : 'alterado')}.`,
       SCREEN
     );
-
-    res.status(status).json({ retorno: 'Sucesso', id: ingredientId });
   } catch (error) {
     res
       .status(400)
@@ -63,9 +63,9 @@ router.delete('/:id', async (req, res) => {
   try {
     await db.deleteIngredient(req.params.id);
 
-    log.generateLog(`Ingrediente ${req.params.id} excluído.`, SCREEN);
-
     res.sendStatus(204);
+
+    log.generateLog(`Ingrediente ${req.params.id} excluído.`, SCREEN);
   } catch (error) {
     res.status(400).json({
       message: 'Erro ao excluir o ingrediente.',

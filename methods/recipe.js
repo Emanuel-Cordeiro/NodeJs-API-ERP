@@ -41,12 +41,12 @@ router.post('/', async (req, res) => {
       recipeId = await db.insertRecipe(req.body);
     }
 
+    res.status(status).json({ retorno: 'Sucesso', id: recipeId });
+
     log.generateLog(
-      `Receita ${client_id} ${(status = 201 ? 'incluída' : 'alterada')}.`,
+      `Receita ${recipeId} ${(status = 201 ? 'incluída' : 'alterada')}.`,
       SCREEN
     );
-
-    res.status(status).json({ retorno: 'Sucesso', id: recipeId });
   } catch (error) {
     res
       .status(400)
@@ -60,9 +60,9 @@ router.delete('/:id', async (req, res) => {
   try {
     await db.deleteRecipe(req.params.id);
 
-    log.generateLog(`Receita ${req.params.id} excluída.`, SCREEN);
-
     res.sendStatus(204);
+
+    log.generateLog(`Receita ${req.params.id} excluída.`, SCREEN);
   } catch (error) {
     res
       .status(400)
